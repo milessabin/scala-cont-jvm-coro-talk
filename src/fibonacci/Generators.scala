@@ -8,19 +8,15 @@ object Generators {
   case object Done extends Trampoline[Nothing]
   case class Continue[T](result : T, next : Unit => Trampoline[T]) extends Trampoline[T]
 
-  class Generator[T](var cont : Unit => Trampoline[T]) {
-    def next : Option[T] = {
+  class Generator[T](var cont : Unit => Trampoline[T]) extends Iterator[T] {
+    def next : T = {
       cont() match {
-        case Continue(r, nextCont) => cont = nextCont; Some(r)
-        case _ => None
+        case Continue(r, nextCont) => cont = nextCont; r
+        case _ => sys.error("Generator exhausted")
       }
     }
-
-    def toStream : Stream[T] =
-      next match {
-        case Some(r) => Stream.cons(r, toStream)
-        case None => Stream.empty[T]
-      }
+    
+    def hasNext = cont() != Done
   }
 
   def generator[T](body : => Unit @cps[Trampoline[T]]) : Generator[T] = {
