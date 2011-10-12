@@ -1,5 +1,6 @@
-package fibonacci
+package continuations
 
+import scala.annotation.tailrec
 import scala.collection.immutable.Stream
 import scala.util.continuations._
 
@@ -19,10 +20,31 @@ object Generators {
     def hasNext = cont() != Done
   }
 
-  def generator[T](body : => Unit @cps[Trampoline[T]]) : Generator[T] = {
+  type Gen[T] = cps[Trampoline[T]]
+  
+  def generator[T](body : => Unit @Gen[T]) : Generator[T] = {
     new Generator((Unit) => reset { body ; Done })
   }
 
-  def yld[T](t : T) : Unit @cps[Trampoline[T]] =
+  def yld[T](t : T) : Unit @Gen[T] =
     shift { (cont : Unit => Trampoline[T]) => Continue(t, cont) }
+}
+
+object TestGenerators {
+  import Generators._
+  
+  def main(args : Array[String]) {
+    val fibs = generator {
+      //@tailrec
+      def fib(s0 : Int, s1 : Int) : Unit @Gen[Int] = {
+        yld(s0)
+        fib(s1, s0+s1)
+      }
+      
+      fib(0, 1)
+    }
+    
+    for(i <- fibs take 10)
+      println(i)
+  }
 }

@@ -1,17 +1,16 @@
 package fibonacci
 
-import Generators._
+import scala.util.continuations._
+import continuations.Generators._
 
 class ScalaGenerator extends Fibonacci {
   val gen = generator {
-    var s0 = 0
-    var s1 = 1
-    while (true) {
+    def fib(s0 : Int, s1 : Int) : Unit @Gen[Int] = {
       yld(s0)
-      val tmp = s0
-      s0 = s1
-      s1 += tmp
+      fib(s1, s0+s1)
     }
+    
+    fib(0, 1)
   }
   
   def exercise = {
