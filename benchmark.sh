@@ -1,7 +1,6 @@
 #!/bin/sh
 
-export JAVA_HOME=${COROJDK}
-export PATH=${JAVA_HOME}/bin:${PATH}
+. ./env.sh
 
 ${SCALATRUNK}/bin/scala -cp bin fibonacci.FibBench fibonacci.ScalaStream --benchmark 1000000
 ${SCALATRUNK}/bin/scala -cp bin fibonacci.FibBench fibonacci.ScalaGenerator --benchmark 10000000
