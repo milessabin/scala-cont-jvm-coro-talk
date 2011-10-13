@@ -1,4 +1,4 @@
-package fibonacci;
+package benchmarks;
 
 import java.util.concurrent.ArrayBlockingQueue;
 

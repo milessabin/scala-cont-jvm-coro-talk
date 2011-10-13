@@ -1,4 +1,4 @@
-package fibonacci
+package benchmarks
 
 import scala.util.continuations._
 import continuations.Generators._

@@ -1,4 +1,4 @@
-package fibonacci
+package benchmarks
 
 import scala.collection.mutable.ArrayBuffer
 

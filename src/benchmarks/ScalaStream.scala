@@ -1,4 +1,4 @@
-package fibonacci
+package benchmarks
 
 class ScalaStream extends Fibonacci {
   lazy val fibs: Stream[Int] = 0 #:: 1 #:: fibs.zip(fibs.tail).map(p => p._1 + p._2)

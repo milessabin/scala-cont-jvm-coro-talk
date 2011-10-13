@@ -1,4 +1,4 @@
-package fibonacci;
+package benchmarks;
 
 public interface Fibonacci {
   public int exercise();
