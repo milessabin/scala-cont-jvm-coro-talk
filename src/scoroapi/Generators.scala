@@ -12,7 +12,7 @@ object Generators {
     
     override def run(n : Nothing) : T = { 
       body(this)
-      sys.error("Unreachable")
+      null.asInstanceOf[T]
     }
   }
   
